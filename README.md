@@ -28,19 +28,19 @@ must be calculated using a single mathematical function, for example the natural
 logarithm. It's up to you to figure out which function to use.
 
 ### User Stories
-[checkbox:checked] <del>User can enter up to 8 binary digits in one 
+- [x] <del>User can enter up to 8 binary digits in one 
 input field</del>
 
-[checkbox:checked] <del>User must be notified if anything other than 
+- [x] <del>User must be notified if anything other than 
 a 0 or 1 was entered</del>
 
-[checkbox:checked] <del>User views the results in a single output field 
+- [x] <del>User views the results in a single output field 
 containing the decimal (base 10) equivalent of the binary number that was entered</del>
 
 ### Bonus Features
-[checkbox:checked] <del>User can enter a variable number of binary digits</del>
+- [x] <del>User can enter a variable number of binary digits</del>
 
-[checkbox:unchecked] User can select a base (2, 8, 10, 16) and convert the input number
+- [ ] User can select a base (2, 8, 10, 16) and convert the input number
 to another selected base (2, 8, 10, 16)
 
 ## Available Scripts
