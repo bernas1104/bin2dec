@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
+
+import bin2dec from './functions/bin2dec';
+import bin2octhex from './functions/bin2octhex';
 import './App.css';
 
 export default function App() {
   const [baseInput, setBaseInput] = useState('2')
-  const [baseOuput, setBaseOuput] = useState('10');
+  const [baseOutput, setBaseOutput] = useState('10');
   const [numberInput, setNumberInput] = useState('');
   const [numberOutput, setNumberOutput] = useState('');
   const [baseExample, setBaseExample] = useState('1100010 --> Only 1\'s and 0\'s');
   const [placeHolder, setPlaceHolder] = useState('1100010');
+  const bases = [
+    ['2', '2 - Binary',],
+    ['8', '8 - Octal'],
+    ['10', '10 - Decimal'],
+    ['16', '16 - Hexadecimal']
+  ];
 
   useEffect(() => {
     switch(baseInput){
@@ -53,12 +62,18 @@ export default function App() {
         alertDanger.appendChild(smallDanger);
         alertWarning.appendChild(smallWarning);
 
-        document.querySelector('.user-input').append(alertDanger, alertWarning);
+        let userInput = document.querySelector('.user-input');
+        userInput.style.maxHeight = '200px';
+        userInput.append(alertDanger, alertWarning);
 
         setTimeout(() => {
           alertDanger.style.opacity = 0;
           alertWarning.style.opacity = 0;
         }, 1000);
+
+        setTimeout(() => {
+          userInput.style.maxHeight = '30px';
+        }, 1500);
 
         setTimeout(() => {
           alertDanger.remove();
@@ -74,13 +89,21 @@ export default function App() {
     e.preventDefault();
 
     const input = String(numberInput);
-    let sum = 0;
-    let exp = input.length - 1;
+    let sum;
+    switch(baseOutput){
+      case '10':
+        sum = bin2dec(input);
 
-    for(let i = 0; i < input.length; i++)
-      sum += parseInt(input[i]) * Math.pow(baseInput, exp--);
+        setNumberOutput(sum);
+        break;
+      case '8': case '16':
+        sum = bin2octhex(input, parseInt(baseOutput));
 
-    setNumberOutput(sum);
+        setNumberOutput(sum);
+        break;
+      default:
+        console.log('Output must be 2, 8, 10 or 16');
+    }
   }
 
   return (
@@ -101,13 +124,15 @@ export default function App() {
             <option value={16}>16 - Hexadecimal</option> */}
           </select>
           <select name="base-output" id="base-output"
-            value={baseOuput}
-            onChange={e => { setBaseOuput(e.target.value) }
+            value={baseOutput}
+            onChange={e => { setBaseOutput(e.target.value) }
           }>
-            {/* <option value={2}>2 - Binary</option> */}
-            {/* <option value={8}>8 - Octal</option> */}
-            <option value={10}>10 - Decimal</option>
-            {/* <option value={16}>16 - Hexadecimal</option> */}
+            { bases.map(base => {
+                return base[0] !== baseInput ?
+                  <option key={base[0]} value={base[0]}>{base[1]}</option> :
+                  <option key={base[0]} value={base[0]} disabled>{base[1]}</option>
+              })
+            }
           </select>
         </div>
 
