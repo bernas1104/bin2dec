@@ -41,13 +41,13 @@ containing the decimal (base 10) equivalent of the binary number that was entere
 - [x] <del>User can enter a variable number of binary digits</del>
 
 - [ ] User can select the base input and output
-  - [x] User can select base input (2-8-10-16)
+  - [x] <del>User can select base input (2-8-10-16)</del>
   - [ ] User can select base output (2-8-10-16)
 
-- [x] Unit tests for the bin2dec
-- [x] Unit tests for the bin2octhex
-  - [x] Unit tests for the bin2oct
-  - [x] Unit tests for the bin2hex
+- [x] <del>Unit tests for the bin2dec</del>
+- [x] <del>Unit tests for the bin2octhex</del>
+  - [x] <del>Unit tests for the bin2oct</del>
+  - [x] <del>nit tests for the bin2hex</del>
 
 ## Available Scripts
 

@@ -69,16 +69,13 @@ export default function App() {
         setTimeout(() => {
           alertDanger.style.opacity = 0;
           alertWarning.style.opacity = 0;
-        }, 1000);
-
-        setTimeout(() => {
           userInput.style.maxHeight = '30px';
-        }, 1500);
+        }, 2000);
 
         setTimeout(() => {
           alertDanger.remove();
           alertWarning.remove();
-        }, 2000);
+        }, 2500);
       }
     } else {
       setNumberInput(e.target.value);
