@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 import bin2dec from './functions/bin2dec';
 import bin2octhex from './functions/bin2octhex';
+import dec2any from './functions/dec2any';
+import renderAlert from './functions/renderAlert';
+
 import './App.css';
 
 export default function App() {
@@ -43,42 +46,24 @@ export default function App() {
 
   function handleNumberInput(e) {
     const newValue = String(e.target.value);
-    const len = newValue.length;
 
-    if(newValue[len - 1] !== '1' && newValue[len - 1] !== '0' && newValue !== ''){
-      if(!document.querySelector('.alert')){
-        let alertDanger = document.createElement('div');
-        let alertWarning = document.createElement('div');
-
-        alertDanger.classList.add('alert', 'danger');
-        alertWarning.classList.add('alert', 'warning');
-
-        let smallDanger = document.createElement('small');
-        let smallWarning = document.createElement('small');
-
-        smallDanger.innerText = '* Input number must follow the input base';
-        smallWarning.innerText = baseExample;
-
-        alertDanger.appendChild(smallDanger);
-        alertWarning.appendChild(smallWarning);
-
-        let userInput = document.querySelector('.user-input');
-        userInput.style.maxHeight = '200px';
-        userInput.append(alertDanger, alertWarning);
-
-        setTimeout(() => {
-          alertDanger.style.opacity = 0;
-          alertWarning.style.opacity = 0;
-          userInput.style.maxHeight = '30px';
-        }, 2000);
-
-        setTimeout(() => {
-          alertDanger.remove();
-          alertWarning.remove();
-        }, 2500);
-      }
-    } else {
-      setNumberInput(e.target.value);
+    switch(baseInput){
+      case '2':
+        if(!/^[0-1]*$/g.test(newValue)){
+          renderAlert(baseExample);
+        } else {
+          setNumberInput(e.target.value);
+        }
+        break;
+      case '10':
+        if(!/^[0-9]*$/g.test(newValue)){
+          renderAlert(baseExample);
+        } else {
+          setNumberInput(e.target.value);
+        }
+        break;
+      default:
+        console.log('Input is only valid for base 2 and 10');
     }
   }
 
@@ -87,19 +72,31 @@ export default function App() {
 
     const input = String(numberInput);
     let sum;
-    switch(baseOutput){
-      case '10':
-        sum = bin2dec(input);
 
-        setNumberOutput(sum);
+    switch(baseInput){
+      case '2':
+        switch(baseOutput){
+          case '10':
+            sum = bin2dec(input);
+    
+            setNumberOutput(sum);
+            break;
+          case '8': case '16':
+            sum = bin2octhex(input, parseInt(baseOutput));
+    
+            setNumberOutput(sum);
+            break;
+          default:
+            console.log('Output must be 2, 8, 10 or 16');
+        }
         break;
-      case '8': case '16':
-        sum = bin2octhex(input, parseInt(baseOutput));
+      case '10':
+        sum = dec2any(input, parseInt(baseOutput));
 
         setNumberOutput(sum);
         break;
       default:
-        console.log('Output must be 2, 8, 10 or 16');
+        console.log('Input must be 2 or 10');
     }
   }
 
@@ -113,12 +110,21 @@ export default function App() {
         <div className="base-select">
           <select name="base-input" id="base-input" 
             value={baseInput} 
-            onChange={e => { setBaseInput(e.target.value) }
+            onChange={e => {
+              const values = ['2', '8', '10', '16'];
+
+              setBaseInput(e.target.value);
+
+              const newOutputBase = values.find(
+                value => value !== e.target.value
+              );
+              setBaseOutput(newOutputBase);
+            }
           }>
             <option value={2}>2 - Binary</option>
-            {/* <option value={8}>8 - Octal</option>
+            {/* <option value={8}>8 - Octal</option>*/}
             <option value={10}>10 - Decimal</option>
-            <option value={16}>16 - Hexadecimal</option> */}
+            {/*<option value={16}>16 - Hexadecimal</option> */}
           </select>
           <select name="base-output" id="base-output"
             value={baseOutput}
